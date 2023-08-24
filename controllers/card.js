@@ -15,7 +15,7 @@ exports.createCard = (req, res) => {
     .then((card) => res.status(201).send({ data: card }))
     .catch((error) => {
       if (error.name === 'ValidationError') {
-        return res.status(404).send({
+        return res.status(400).send({
           message: `Переданы некорректные данные для создании карточки - ${error.message}`,
         });
       }
@@ -28,17 +28,14 @@ exports.deleteCard = (req, res) => {
   const { cardId } = req.params;
 
   Card.findByIdAndRemove(cardId)
+    .orFail()
     .then(() => res.status(200).send({ message: 'Карточка удалена' }))
     .catch((error) => {
       if (error.name === 'CastError') {
-        return res.status(400).send({
-          message: 'Переданы некорректные данные для удаления карточки.',
-        });
+        return res.status(400).send({ message: 'Переданы некорректные данные для удаления карточки.' });
       }
       if (error.name === 'DocumentNotFoundError') {
-        return res
-          .status(404)
-          .send({ message: 'Карточка с указанным id не найдена.' });
+        return res.status(404).send({ message: 'Карточка с указанным _id не найдена.' });
       }
       return res.status(500).send({ message: error.message });
     });

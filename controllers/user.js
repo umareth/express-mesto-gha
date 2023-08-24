@@ -16,12 +16,11 @@ exports.getUsers = (req, res) => {
 exports.getUserById = (req, res) => {
   const { userId } = req.params;
   User.findById(userId)
+    .orFail()
     .then((user) => res.send({ data: user }))
     .catch((error) => {
       if (error.name === 'CastError') {
-        return res.status(400).send({
-          message: 'Переданы некорректные данные для поиска пользователя.',
-        });
+        return res.status(400).send({ message: `Ошибка по умолчанию -  ${error.message}` });
       }
       if (error.name === 'DocumentNotFoundError') {
         return res

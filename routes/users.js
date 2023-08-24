@@ -1,5 +1,6 @@
 // users.js (в папке routes)
 const express = require('express');
+
 const router = express.Router();
 const usersController = require('../controllers/user'); // Импортируйте контроллер пользователей
 

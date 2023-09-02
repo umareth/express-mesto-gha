@@ -2,18 +2,33 @@
 const express = require('express');
 
 const router = express.Router();
-const usersController = require('../controllers/user'); // Импортируйте контроллер пользователей
+const usersController = require('../controllers/user'); // Импортируйте контроллер пользователей=
+
+const { celebrate, Joi } = require('celebrate');
 
 // Маршрут для получения всех пользователей
 router.get('/', usersController.getUsers);
 
+router.get('/me', usersController.getСurrentUser);
+
 // Маршрут для получения пользователя по ID
-router.get('/:userId', usersController.getUserById);
+router.get('/users/:id', celebrate({
+  params: Joi.object().keys({
+    id: Joi.string().hex().length(24),
+  }),
+}), usersController.getUserById);
 
-// Маршрут для создания пользователя
-router.post('/', usersController.createUser);
+router.patch('/users/me', celebrate({
+  body: Joi.object().keys({
+    name: Joi.string().min(2).max(30),
+    about: Joi.string().min(2).max(30),
+  }),
+}), usersController.updateUserInfo);
 
-router.patch('/me', usersController.updateUserInfo);
-router.patch('/me/avatar', usersController.updateUserAvatar);
+router.patch('/users/me/avatar', celebrate({
+  body: Joi.object().keys({
+    avatar: Joi.string().regex(/^https?:\/\/(?:[a-zA-Z0-9_-]+\.)+[a-zA-Z]{2,9}(?:\/[^/]+)*\/[^/]+\.(?:jpg|jpeg|png|gif|bmp|svg|webp)$/i),
+  }),
+}), usersController.updateUserAvatar);
 
 module.exports = router;

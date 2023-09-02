@@ -29,6 +29,13 @@ exports.deleteCard = (req, res) => {
 
   Card.findByIdAndRemove(cardId)
     .orFail()
+    .then((card) => {
+      if (req.user._id !== card.owner._id.toString()) {
+        throw new ForbiddenError('Можно удалять только свои карточки');
+      } else {
+        return card.remove();
+      }
+    })
     .then(() => res.status(200).send({ message: 'Карточка удалена' }))
     .catch((error) => {
       if (error.name === 'CastError') {

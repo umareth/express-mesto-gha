@@ -47,6 +47,10 @@ app.use((err, req, res, next) => {
   next();
 });
 
+app.use(() => {
+  throw new NotFoundErr('Страница по указанному маршруту не найдена');
+});
+
 mongoose.connect('mongodb://localhost:27017/mestodb', {
   useNewUrlParser: true,
   useUnifiedTopology: true,

@@ -1,9 +1,9 @@
 const express = require('express');
 
 const router = express.Router();
-const cardController = require('../controllers/card');
-
 const { celebrate, Joi } = require('celebrate');
+
+const cardController = require('../controllers/card');
 
 // Роут для получения всех карточек
 router.get('/', cardController.getCards);

@@ -2,9 +2,9 @@
 const express = require('express');
 
 const router = express.Router();
-const usersController = require('../controllers/user'); // Импортируйте контроллер пользователей=
-
 const { celebrate, Joi } = require('celebrate');
+
+const usersController = require('../controllers/user'); // Импортируйте контроллер пользователей=
 
 // Маршрут для получения всех пользователей
 router.get('/', usersController.getUsers);

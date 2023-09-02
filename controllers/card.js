@@ -22,28 +22,30 @@ exports.createCard = (req, res, next) => {
 
 // Обработка DELETE-запроса для удаления карточки по идентификатору
 exports.deleteCard = (req, res, next) => {
-  const { cardId } = req.params;
-
-  Card.findByIdAndRemove(cardId)
+  Card.findByIdAndRemove(req.params.cardId)
     .orFail(() => {
       throw new NotFoundErr('Карточка с указанным _id не найдена');
     })
     .then((card) => {
-      if (req.user._id !== card.owner._id.toString()) {
-        throw new ForbiddenErr('Можно удалять только свои карточки');
+      const owner = card.owner.toString();
+      if (req.user._id === owner) {
+        Card.deleteOne(card)
+          .then(() => {
+            res.send(card);
+          })
+          .catch(next);
       } else {
-        return card.remove();
+        throw new ForbiddenErr('Удалить карточку может только создатель');
       }
     })
-    .then(() => res.status(200).send({ message: 'Карточка удалена' }))
     .catch((error) => {
       if (error.name === 'CastError') {
-        next(new BadRequestErr('Переданы некорректные данные для удаления карточки.'));
+        next(new BadRequestErr('Переданы некорректные данные удаления'));
       } else {
         next(error);
       }
     });
-};
+};//
 
 module.exports.likeCard = (req, res, next) => {
   Card.findByIdAndUpdate(
@@ -67,7 +69,7 @@ module.exports.likeCard = (req, res, next) => {
 module.exports.dislikeCard = (req, res, next) => {
   Card.findByIdAndUpdate(
     req.params.cardId,
-    { $pull: { likes: req.user._id } }, // убрать _id из массива
+    { $pull: { likes: req.user._id } }, // дизлайк _id из массива
     { new: true },
   )
     .orFail(() => {

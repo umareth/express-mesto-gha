@@ -8,7 +8,7 @@ const ForbiddenErr = require('../middlewares/err/errForbidden');
 module.exports.getCards = (req, res, next) => {
   Card.find({})
     .then((cards) => res.send({ data: cards }))
-    .catch(next)
+    .catch(next);
 };
 
 // Обработка POST-запроса для создания карточки

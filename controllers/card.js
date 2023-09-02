@@ -40,7 +40,7 @@ exports.deleteCard = (req, res, next) => {
     })
     .catch((error) => {
       if (error.name === 'CastError') {
-        next(new BadRequestErr('Переданы некорректные данные удаления'));
+        next(new BadRequestErr('Переданы невалидные данные удаления'));
       } else {
         next(error);
       }

@@ -25,7 +25,7 @@ router.patch('/me', celebrate({
   }),
 }), usersController.updateUserInfo);
 
-router.patch('/users/me/avatar', celebrate({
+router.patch('/me/avatar', celebrate({
   body: Joi.object().keys({
     avatar: Joi.string().regex(/^https?:\/\/(?:[a-zA-Z0-9_-]+\.)+[a-zA-Z]{2,9}(?:\/[^/]+)*\/[^/]+\.(?:jpg|jpeg|png|gif|bmp|svg|webp)$/i),
   }),

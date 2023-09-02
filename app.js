@@ -5,6 +5,8 @@ const mongoose = require('mongoose'); // Подключаем mongoose
 const bodyParser = require('body-parser');
 const { errors, Joi, celebrate } = require('celebrate');
 
+const NotFoundErr = require('./middlewares/err/notFound.js');
+
 // Слушаем 3000 порт
 const { PORT = 3000 } = process.env;
 const { login, createUser } = require('./controllers/user');
@@ -43,12 +45,6 @@ app.use((err, req, res, next) => {
     res.status(500).send({ message: 'Произошла ошибка на сервере' });
   }
   next();
-});
-
-app.use((req, res) => {
-  res
-    .status(404)
-    .send({ message: 'Страница по указанному маршруту не найдена' });
 });
 
 mongoose.connect('mongodb://localhost:27017/mestodb', {

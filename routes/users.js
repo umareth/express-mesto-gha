@@ -12,7 +12,7 @@ router.get('/', usersController.getUsers);
 router.get('/me', usersController.getСurrentUser);
 
 // Маршрут для получения пользователя по ID
-router.get('/users/:id', celebrate({
+router.get('/:id', celebrate({
   params: Joi.object().keys({
     id: Joi.string().hex().length(24),
   }),

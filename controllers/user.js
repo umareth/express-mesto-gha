@@ -32,7 +32,7 @@ exports.getUserById = (req, res, next) => {
     .orFail(() => {
       throw new NotFoundErr('Пользователь по указанному _id не найден');
     })
-    .then((user) => res.send({ data: user }))
+    .then((user) => res.send({ user }))
     .catch((error) => {
       if (error.name === 'CastError') {
         next(new BadRequestErr('Передан невалидный id пользователя'));
@@ -115,7 +115,7 @@ module.exports.updateUserInfo = (req, res, next) => {
     .orFail(() => {
       throw new NotFoundErr('Запрашиваемый пользователь не найден');
     })
-    .then((user) => res.send({ data: user }))
+    .then((user) => res.send({ user }))
     .catch((error) => {
       if (error.name === 'ValidationError') {
         next(new BadRequestErr('Переданы невалидные данные для обновления данных юзера'));
@@ -141,7 +141,7 @@ module.exports.updateUserAvatar = (req, res, next) => {
     .orFail(() => {
       throw new NotFoundErr('Запрашиваемый пользователь не найден');
     })
-    .then((user) => res.send({ data: user }))
+    .then((user) => res.send({ user }))
     .catch((error) => {
       if (error.name === 'ValidationError') {
         next(new BadRequestErr('Отправлены невалидные данные для обновления аватара'));

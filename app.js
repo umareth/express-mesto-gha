@@ -4,6 +4,7 @@ const mongoose = require('mongoose'); // Подключаем mongoose
 
 const bodyParser = require('body-parser');
 const { errors, Joi, celebrate } = require('celebrate');
+const cors = require('./middlewares/cors');
 
 const NotFoundErr = require('./middlewares/err/notFound.js');
 
@@ -14,6 +15,8 @@ const { login, createUser } = require('./controllers/user');
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors);
+
 
 app.post('/signin', celebrate({
   body: Joi.object().keys({

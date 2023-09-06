@@ -7,7 +7,7 @@ const ForbiddenErr = require('../middlewares/err/errForbidden');
 // Обработка GET-запроса для получения всех карточек
 module.exports.getCards = (req, res, next) => {
   Card.find({})
-    .then((cards) => res.send({ cards }))
+    .then((cards) => res.send(cards))
     .catch(next);
 };
 
@@ -16,7 +16,7 @@ exports.createCard = (req, res, next) => {
   const { name, link } = req.body;
 
   Card.create({ name, link, owner: req.user._id })
-    .then((card) => res.status(201).send({ card }))
+    .then((card) => res.status(201).send(card))
     .catch((err) => next(err));
 };
 
@@ -56,7 +56,7 @@ module.exports.likeCard = (req, res, next) => {
     .orFail(() => {
       throw new NotFoundErr('Запрашиваемая карточка не найдена');
     })
-    .then((card) => res.status(200).send({ card }))
+    .then((card) => res.status(200).send(card))
     .catch((error) => {
       if (error.name === 'CastError') {
         next(new BadRequestErr('Передан невалидный id'));
@@ -75,7 +75,7 @@ module.exports.dislikeCard = (req, res, next) => {
     .orFail(() => {
       throw new NotFoundErr('Запрашиваемая карточка не найдена');
     })
-    .then((card) => res.status(200).send({ card }))
+    .then((card) => res.status(200).send(card))
     .catch((error) => {
       if (error.name === 'CastError') {
         next(new BadRequestErr('Передан невалидный id'));

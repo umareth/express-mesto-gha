@@ -8,7 +8,6 @@ const ConflictErr = require('../middlewares/err/confErr');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
-
 exports.getUsers = (req, res, next) => {
   User.find()
     .then((users) => {

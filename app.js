@@ -23,7 +23,6 @@ app.get('/crash-test', () => {
   }, 0);
 });
 
-
 app.post('/signin', celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email({ tlds: { allow: false } }),
